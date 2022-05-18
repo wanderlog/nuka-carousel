@@ -347,6 +347,11 @@ export interface InternalCarouselProps {
   keyCodeConfig: KeyCodeConfig;
 
   /**
+   * Extra className to be added to the scrollable list wrapper
+   */
+  listClassName?: string;
+
+  /**
    * optional callback function
    */
   onDragStart: (
@@ -430,6 +435,11 @@ export interface InternalCarouselProps {
   scrollMode: ScrollMode;
 
   /**
+   * Extra className to be added to the container for each slide
+   */
+  slideClassName?: string;
+
+  /**
    * Manually set the index of the initial slide to be shown
    */
   slideIndex: number;
@@ -492,3 +502,21 @@ export interface InternalCarouselProps {
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CarouselProps extends Partial<InternalCarouselProps> {}
+
+export interface CarouselRef {
+  /**
+   * Moves forward to the specified slide
+   * @param to
+   */
+  moveSlide: (to?: number) => void;
+
+  /**
+   * Go to the next slide
+   */
+  nextSlide: () => void;
+
+  /**
+   * Go to the previous slide
+   */
+  prevSlide: () => void;
+}

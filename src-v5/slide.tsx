@@ -102,7 +102,8 @@ const Slide = ({
   setFrameHeight,
   frameHeight,
   visibleHeights,
-  adaptiveHeight
+  adaptiveHeight,
+  slideClassName
 }: {
   count: number;
   children: ReactNode | ReactNode[];
@@ -121,6 +122,7 @@ const Slide = ({
   frameHeight: number;
   visibleHeights: MutableRefObject<SlideHeight[]>;
   adaptiveHeight: boolean;
+  slideClassName: string | undefined;
 }): JSX.Element => {
   const customIndex = wrapAround
     ? generateIndex(index, count, typeOfSlide)
@@ -188,9 +190,14 @@ const Slide = ({
   return (
     <div
       ref={slideRef}
-      className={`slide${typeOfSlide ? ` ${typeOfSlide}` : ''}${
-        isVisible ? ' slide-visible' : ''
-      }`}
+      className={[
+        'slide',
+        typeOfSlide,
+        isVisible && 'slide-visible',
+        slideClassName
+      ]
+        .filter((value) => value)
+        .join(' ')}
       style={getSlideStyles(
         count,
         isCurrentSlide,
