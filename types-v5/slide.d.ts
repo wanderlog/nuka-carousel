@@ -1,0 +1,23 @@
+import { ReactNode, MutableRefObject } from 'react';
+import { Alignment, SlideHeight } from './types';
+declare const Slide: ({ count, children, currentSlide, index, isCurrentSlide, typeOfSlide, wrapAround, cellSpacing, animation, speed, slidesToShow, zoomScale, cellAlign, setFrameHeight, frameHeight, visibleHeights, adaptiveHeight, slideClassName }: {
+    count: number;
+    children: ReactNode | ReactNode[];
+    currentSlide: number;
+    index: number;
+    isCurrentSlide: boolean;
+    typeOfSlide?: "prev-cloned" | "next-cloned" | undefined;
+    wrapAround?: boolean | undefined;
+    cellSpacing?: number | undefined;
+    animation?: "zoom" | "fade" | undefined;
+    speed?: number | undefined;
+    slidesToShow: number;
+    zoomScale?: number | undefined;
+    cellAlign: Alignment;
+    setFrameHeight: (h: number) => void;
+    frameHeight: number;
+    visibleHeights: MutableRefObject<SlideHeight[]>;
+    adaptiveHeight: boolean;
+    slideClassName: string | undefined;
+}) => JSX.Element;
+export default Slide;
