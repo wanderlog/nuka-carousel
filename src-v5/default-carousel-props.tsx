@@ -1,14 +1,19 @@
 import React from 'react';
-import { Alignment, ControlProps, D3EasingFunctions } from './types';
-import { PagingDots, PreviousButton, NextButton } from './default-controls';
+import {
+  Alignment,
+  InternalCarouselProps,
+  ControlProps,
+  D3EasingFunctions,
+  ScrollMode
+} from './types';
+import { NextButton, PagingDots, PreviousButton } from './default-controls';
 import { defaultRenderAnnounceSlideMessage } from './announce-slide';
 
-const defaultProps = {
+const defaultProps: InternalCarouselProps = {
   adaptiveHeight: false,
   afterSlide: () => {
     // do nothing
   },
-  autoGenerateStyleTag: true,
   autoplay: false,
   autoplayInterval: 3000,
   autoplayReverse: false,
@@ -50,7 +55,7 @@ const defaultProps = {
     <PreviousButton {...props} />
   ),
   renderCenterRightControls: (props: ControlProps) => <NextButton {...props} />,
-  scrollMode: 'page',
+  scrollMode: ScrollMode.page,
   slideIndex: 0,
   slidesToScroll: 1,
   slidesToShow: 1,

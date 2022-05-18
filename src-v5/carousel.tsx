@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Slide from './slide';
 import { getSliderListStyles } from './slider-list';
-import { CarouselProps, KeyCodeFunction, SlideHeight } from './types';
+import { CarouselProps, InternalCarouselProps, KeyCodeFunction, SlideHeight } from './types';
 import renderControls from './controls';
 import defaultProps from './default-carousel-props';
 import {
@@ -15,7 +15,10 @@ import {
 } from './utils';
 import AnnounceSlide from './announce-slide';
 
-export const Carousel = (props: CarouselProps): React.ReactElement => {
+export const Carousel = (rawProps: CarouselProps): React.ReactElement => {
+  // This cast is safe due to the `.defaultProps` statement below
+  const props = rawProps as InternalCarouselProps;
+
   const count = React.Children.count(props.children);
   const [currentSlide, setCurrentSlide] = useState<number>(
     props.autoplayReverse ? count - props.slidesToShow : props.slideIndex
