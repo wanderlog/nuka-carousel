@@ -127,7 +127,7 @@ export const getSliderListStyles = (
     transition:
       animation && slideAnimation !== 'fade'
         ? `${speed || 500}ms ease 0s`
-        : 'none',
+        : undefined,
     transform: positioning,
     display: 'flex'
   };
