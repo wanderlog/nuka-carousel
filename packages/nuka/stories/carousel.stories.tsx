@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { ComponentMeta, Story } from '@storybook/react';
 import { renderToString } from 'react-dom/server';
 
 import Carousel, {
   Alignment,
+  CarouselRef,
   ControlProps,
   InternalCarouselProps
 } from '../src/index';
@@ -21,6 +22,8 @@ export default {
 interface StoryProps {
   storySlideCount: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
   slideHeights?: number[];
+  /** Show controls that control the carousel via a ref */
+  showRefControls?: boolean;
 }
 
 const colors = [
@@ -38,8 +41,11 @@ const colors = [
 const Template: Story<InternalCarouselProps & StoryProps> = ({
   storySlideCount = 9,
   slideHeights,
+  showRefControls,
   ...args
 }) => {
+  const carouselRef = useRef<CarouselRef>(null);
+
   const slides = colors.slice(0, storySlideCount).map((color, index) => (
     <img
       src={`https://via.placeholder.com/800/${color}/ffffff/&text=slide${
@@ -53,23 +59,43 @@ const Template: Story<InternalCarouselProps & StoryProps> = ({
       }}
     />
   ));
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}
-    >
+    <>
+      {showRefControls && (
+        <div style={{ textAlign: 'center' }}>
+          Controls using ref:{' '}
+          <button onClick={() => carouselRef.current?.nextSlide()}>
+            Next slide
+          </button>
+          <button onClick={() => carouselRef.current?.prevSlide()}>
+            Previous slide
+          </button>
+          <button onClick={() => carouselRef.current?.moveSlide(0)}>
+            Move to first slide
+          </button>
+        </div>
+      )}
+
       <div
         style={{
-          maxWidth: 600,
-          margin: '0px auto'
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
         }}
       >
-        <Carousel {...args}>{slides}</Carousel>
+        <div
+          style={{
+            maxWidth: 600,
+            margin: '0px auto'
+          }}
+        >
+          <Carousel ref={carouselRef} {...args}>
+            {slides}
+          </Carousel>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -87,6 +113,9 @@ const StaticTemplate: Story<InternalCarouselProps & StoryProps> = (args) => {
 /* Stories - add common combinations of props here! */
 export const Default = Template.bind({});
 Default.args = {};
+
+export const WithRefControls = Template.bind({});
+WithRefControls.args = { showRefControls: true };
 
 export const Vertical = Template.bind({});
 Vertical.args = {
