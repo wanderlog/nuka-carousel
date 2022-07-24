@@ -113,7 +113,8 @@ const Slide = ({
   cellAlign,
   onVisibleSlideHeightChange,
   adaptiveHeight,
-  initializedAdaptiveHeight
+  initializedAdaptiveHeight,
+  slideClassName
 }: {
   count: number;
   children: ReactNode | ReactNode[];
@@ -135,6 +136,7 @@ const Slide = ({
   onVisibleSlideHeightChange: (index: number, height: number | null) => unknown;
   adaptiveHeight: boolean;
   initializedAdaptiveHeight: boolean;
+  slideClassName: string | undefined;
 }): JSX.Element => {
   const customIndex = wrapAround
     ? generateIndex(index, count, typeOfSlide)
@@ -176,14 +178,18 @@ const Slide = ({
     slidesToShow
   ]);
 
-  const currentSlideClass = isCurrentSlide && isVisible ? ' slide-current' : '';
-
   return (
     <div
       ref={slideRef}
-      className={`slide${currentSlideClass}${
-        typeOfSlide ? ` ${typeOfSlide}` : ''
-      }${isVisible ? ' slide-visible' : ''}`}
+      className={[
+        'slide',
+        isCurrentSlide && isVisible && 'slide-current',
+        typeOfSlide,
+        isVisible && 'slide-visible',
+        slideClassName
+      ]
+        .filter((value) => value)
+        .join(' ')}
       style={getSlideStyles(
         count,
         isCurrentSlide,
