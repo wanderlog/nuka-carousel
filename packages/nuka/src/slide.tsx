@@ -1,4 +1,10 @@
-import React, { CSSProperties, ReactNode, useRef, useEffect } from 'react';
+import React, {
+  CSSProperties,
+  ReactNode,
+  useRef,
+  useEffect,
+  useCallback
+} from 'react';
 import { Alignment } from './types';
 
 const getSlideWidth = (count: number, wrapAround?: boolean): string =>
@@ -150,33 +156,44 @@ const Slide = ({
 
   const slideRef = useRef<HTMLDivElement>(null);
 
-  const prevIsVisibleRef = useRef(false);
-  useEffect(() => {
+  const prevSlideHeight = useRef<number | null>(null);
+
+  const handleHeightOrVisibilityChange = useCallback(() => {
     const node = slideRef.current;
+
     if (node) {
-      const slideHeight = node.getBoundingClientRect()?.height;
       if (isVisible) {
         node.removeAttribute('inert');
       } else {
         node.setAttribute('inert', 'true');
       }
 
-      const prevIsVisible = prevIsVisibleRef.current;
-      if (isVisible && !prevIsVisible) {
-        onVisibleSlideHeightChange(customIndex, slideHeight);
-      } else if (!isVisible && prevIsVisible) {
-        onVisibleSlideHeightChange(customIndex, null);
-      }
+      const slideHeight = isVisible
+        ? node.getBoundingClientRect().height
+        : null;
 
-      prevIsVisibleRef.current = isVisible;
+      if (slideHeight !== prevSlideHeight.current) {
+        prevSlideHeight.current = slideHeight;
+        onVisibleSlideHeightChange(customIndex, slideHeight);
+      }
     }
-  }, [
-    adaptiveHeight,
-    customIndex,
-    isVisible,
-    onVisibleSlideHeightChange,
-    slidesToShow
-  ]);
+  }, [customIndex, isVisible, onVisibleSlideHeightChange]);
+
+  // Update status if any dependencies change
+  useEffect(() => {
+    handleHeightOrVisibilityChange();
+  }, [handleHeightOrVisibilityChange]);
+
+  // Also allow for re-measuring height even if none of the props or state
+  // changes. This is useful if a carousel item is expandable.
+  useEffect(() => {
+    const node = slideRef.current;
+    if (node && typeof ResizeObserver !== 'undefined') {
+      const resizeObserver = new ResizeObserver(handleHeightOrVisibilityChange);
+      resizeObserver.observe(node);
+      return () => resizeObserver.disconnect();
+    }
+  }, [handleHeightOrVisibilityChange]);
 
   return (
     <div
