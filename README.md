@@ -1,3 +1,45 @@
+# Wanderlog header
+
+This is a fork of Nuka Carousel that we maintain because the v5 branch has been
+abandoned, and we temporariily don't want to upgrade. Eventually, we may want
+to upgrade to nuka-carousel v8, but for now, we're maintaining the fork.
+
+To add a new patch:
+
+```sh
+git checkout wanderlog
+# 1. Make your changes and commit them to the wanderlog branch
+# git add ...
+git commit -m "Your change"
+git push
+
+git checkout wanderlog-built
+git reset --hard wanderlog
+
+# 2. Push a built version to the wanderlog-built branch
+# Comment out the es, lib, and types lines in .gitignore
+# Note: the below line works on macOS
+sed -i '' -e '/^es$/s/^/#/' -e '/^lib$/s/^/#/' -e '/^types$/s/^/#/' .gitignore
+# On Linux:
+sed -i -e '/^es$/s/^/#/' -e '/^lib$/s/^/#/' -e '/^types$/s/^/#/' .gitignore
+
+corepack enable
+pnpm install
+pnpm build
+corepack disable
+git push -f
+```
+
+Then, make a release:
+
+1. Visit https://github.com/wanderlog/nuka-carousel/releases/new
+2. Click "Draft a new release"
+3. Fill in the "Tag version" field with the new version number (e.g.,
+    if the last version was v5.2.0.wanderlog.1, change it to
+    v5.2.0.wanderlog.2)
+4. You can leave everything else blank and click "Publish release"
+
+--------------------------------------------------------------------------------
 # nuka-carousel
 
 [![Maintenance Status][maintenance-image]](#maintenance-status)
