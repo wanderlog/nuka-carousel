@@ -26,8 +26,8 @@
     "test:e2e": "cypress open",
     "test:e2e:ci": "cypress run",
     "package": "pnpm pack",
-    "prepublishOnly": "shx cp ../../README.md ./README.md && shx cp ../../LICENSE ./LICENSE && pnpm run build",
-    "postpack": "shx rm ./README.md && shx rm ./LICENSE",
+    "prepublishOnly": "cp ../../README.md ./README.md && cp ../../LICENSE ./LICENSE && pnpm run build",
+    "postpack": "rm ./README.md && rm ./LICENSE",
     "storybook": "start-storybook -p 6006",
     "storybook:build": "build-storybook",
     "chromatic": "chromatic --exit-zero-on-changes"
