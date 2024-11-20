@@ -16,7 +16,7 @@ git push
 git checkout wanderlog-built
 git reset --hard wanderlog
 
-# 2. Push a built version to the wanderlog-built branch
+# 2. Build the latest changes
 # Comment out the es, lib, and types lines in .gitignore
 # Note: the below line works on macOS
 sed -i '' -e '/^es$/s/^/#/' -e '/^lib$/s/^/#/' -e '/^types$/s/^/#/' .gitignore
@@ -27,6 +27,22 @@ corepack enable
 pnpm install
 pnpm build
 corepack disable
+
+# 3. Edit package.json to set the version to 1 higher than the latest: e.g.,
+# if the previous release was v5.2.0-wanderlog.1, change it to
+# "version": "5.2.0-wanderlog.2"
+# See https://github.com/wanderlog/nuka-carousel/releases for the latest version
+open packages/nuka/package.json
+
+# 4. Commit changes with the built version. Since nuka-carousel has switched
+# to pnpm, we need to move everything into the root directory
+rm -f ./*
+rm -rf node_modules examples
+mv packages/nuka/* .
+rm -rf packages
+
+git add .
+git commit -m "[v5.2.0-wanderlog.3] Your change"
 git push -f
 ```
 
