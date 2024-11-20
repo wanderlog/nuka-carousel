@@ -569,9 +569,18 @@ export const Carousel = React.forwardRef<CarouselRef, CarouselProps>(
             currentSlide === index - count
           : currentSlide === index;
 
+        // If the child has a key, use it. Otherwise, use a combination of the
+        // type of slide and the index.
+        let key: React.Key;
+        if (child && typeof child === 'object' && 'key' in child && child.key) {
+          key = child.key;
+        } else {
+          key = `${typeOfSlide}-${index}`;
+        }
+
         return (
           <Slide
-            key={`${typeOfSlide}-${index}`}
+            key={key}
             count={count}
             currentSlide={currentSlide}
             index={index}
