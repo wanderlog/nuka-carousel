@@ -66,6 +66,8 @@ const getPositioning = (
   wrapAround?: boolean,
   move?: number
 ): string | undefined => {
+  const isRTL = typeof document !== 'undefined' && document.dir === 'rtl';
+
   // When wrapAround is enabled, we show the slides 3 times
   const totalCount = wrapAround ? 3 * count : count;
   const slideSize = 100 / totalCount;
@@ -83,13 +85,17 @@ const getPositioning = (
     initialValue += slideSize * excessLeftSlides;
   }
 
-  const horizontalMove = getTransition(
+  let horizontalMove = getTransition(
     count,
     initialValue,
     currentSlide,
     cellAlign,
     wrapAround
   );
+
+  if (isRTL) {
+    horizontalMove = -horizontalMove;
+  }
 
   // Special-case this. It's better to return undefined rather than a
   // transform of 0 pixels since transforms can cause flickering in chrome.

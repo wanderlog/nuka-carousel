@@ -416,7 +416,10 @@ export const Carousel = React.forwardRef<CarouselRef, CarouselProps>(
           return;
         }
 
-        if (move > 0) {
+        const isRTL = typeof document !== 'undefined' && document.dir === 'rtl';
+        const shouldGoNext = isRTL ? move < 0 : move > 0;
+
+        if (shouldGoNext) {
           nextSlide();
         } else {
           prevSlide();
