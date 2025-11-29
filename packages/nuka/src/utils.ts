@@ -85,3 +85,14 @@ export const getPrevMoveIndex = (
 
   return currentSlide - slidesToScroll;
 };
+
+/**
+ * Returns a multiplier for adjusting carousel behavior based on layout direction.
+ * In RTL (right-to-left) layouts, returns -1 to invert drag and translation directions.
+ * In LTR (left-to-right) layouts, returns 1 to maintain default behavior.
+ * @returns {number} -1 for RTL mode, 1 for LTR mode
+ */
+export const rtlMultiplier = (): number => {
+  const isRTL = typeof document !== 'undefined' && document.dir === 'rtl';
+  return isRTL ? -1 : 1;
+};
