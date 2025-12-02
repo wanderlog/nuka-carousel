@@ -21,7 +21,8 @@ import {
   addEvent,
   removeEvent,
   getNextMoveIndex,
-  getPrevMoveIndex
+  getPrevMoveIndex,
+  rtlMultiplier
 } from './utils';
 import { useFrameHeight } from './hooks/use-frame-height';
 
@@ -416,10 +417,12 @@ export const Carousel = React.forwardRef<CarouselRef, CarouselProps>(
           return;
         }
 
-        if (move > 0) {
-          nextSlide();
-        } else {
+        const adjustedMove = rtlMultiplier() * move;
+
+        if (adjustedMove > 0) {
           prevSlide();
+        } else {
+          nextSlide();
         }
 
         setMove(0);

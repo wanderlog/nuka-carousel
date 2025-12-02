@@ -1,5 +1,6 @@
 import React, { CSSProperties, ReactNode } from 'react';
 import { Alignment } from './types';
+import { rtlMultiplier } from './utils';
 
 const getSliderListWidth = (
   count: number,
@@ -83,13 +84,9 @@ const getPositioning = (
     initialValue += slideSize * excessLeftSlides;
   }
 
-  const horizontalMove = getTransition(
-    count,
-    initialValue,
-    currentSlide,
-    cellAlign,
-    wrapAround
-  );
+  const horizontalMove =
+    rtlMultiplier() *
+    getTransition(count, initialValue, currentSlide, cellAlign, wrapAround);
 
   // Special-case this. It's better to return undefined rather than a
   // transform of 0 pixels since transforms can cause flickering in chrome.
