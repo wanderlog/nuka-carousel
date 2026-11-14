@@ -1,5 +1,5 @@
 {
-  "name": "nuka-carousel",
+  "name": "@wanderlogapp/nuka-carousel",
   "version": "5.2.0-wanderlog.4",
   "description": "Pure React Carousel",
   "main": "lib/index.js",
@@ -100,6 +100,5 @@
     "url": "https://github.com/FormidableLabs/nuka-carousel/issues"
   },
   "homepage": "https://github.com/FormidableLabs/nuka-carousel",
-  "sideEffects": false,
-  "dependencies": {}
+  "sideEffects": false
 }
